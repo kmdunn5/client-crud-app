@@ -3,9 +3,14 @@ package com.aquent.crudapp.person;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.aquent.crudapp.client.Client;
+
+import lombok.Data;
+
 /**
  * The person entity corresponding to the "person" table in the database.
  */
+@Data
 public class Person {
 
     private Integer personId;
@@ -38,67 +43,70 @@ public class Person {
     @Size(min = 5, max = 5, message = "Zip code is required with length 5")
     private String zipCode;
 
-    public Integer getPersonId() {
-        return personId;
-    }
+    // TODO: queries load the relationship in JDBC
+    private Client client;
 
-    public void setPersonId(Integer personId) {
-        this.personId = personId;
-    }
+    // public Integer getPersonId() {
+    //     return personId;
+    // }
 
-    public String getFirstName() {
-        return firstName;
-    }
+    // public void setPersonId(Integer personId) {
+    //     this.personId = personId;
+    // }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
+    // public String getFirstName() {
+    //     return firstName;
+    // }
 
-    public String getLastName() {
-        return lastName;
-    }
+    // public void setFirstName(String firstName) {
+    //     this.firstName = firstName;
+    // }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+    // public String getLastName() {
+    //     return lastName;
+    // }
 
-    public String getEmailAddress() {
-        return emailAddress;
-    }
+    // public void setLastName(String lastName) {
+    //     this.lastName = lastName;
+    // }
 
-    public void setEmailAddress(String emailAddress) {
-        this.emailAddress = emailAddress;
-    }
+    // public String getEmailAddress() {
+    //     return emailAddress;
+    // }
 
-    public String getStreetAddress() {
-        return streetAddress;
-    }
+    // public void setEmailAddress(String emailAddress) {
+    //     this.emailAddress = emailAddress;
+    // }
 
-    public void setStreetAddress(String streetAddress) {
-        this.streetAddress = streetAddress;
-    }
+    // public String getStreetAddress() {
+    //     return streetAddress;
+    // }
 
-    public String getCity() {
-        return city;
-    }
+    // public void setStreetAddress(String streetAddress) {
+    //     this.streetAddress = streetAddress;
+    // }
 
-    public void setCity(String city) {
-        this.city = city;
-    }
+    // public String getCity() {
+    //     return city;
+    // }
 
-    public String getState() {
-        return state;
-    }
+    // public void setCity(String city) {
+    //     this.city = city;
+    // }
 
-    public void setState(String state) {
-        this.state = state;
-    }
+    // public String getState() {
+    //     return state;
+    // }
 
-    public String getZipCode() {
-        return zipCode;
-    }
+    // public void setState(String state) {
+    //     this.state = state;
+    // }
 
-    public void setZipCode(String zipCode) {
-        this.zipCode = zipCode;
-    }
+    // public String getZipCode() {
+    //     return zipCode;
+    // }
+
+    // public void setZipCode(String zipCode) {
+    //     this.zipCode = zipCode;
+    // }
 }

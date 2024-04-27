@@ -22,6 +22,7 @@ public class JdbcPersonDao implements PersonDao {
 
     private static final String SQL_LIST_PEOPLE = "SELECT * FROM person ORDER BY first_name, last_name, person_id";
     private static final String SQL_READ_PERSON = "SELECT * FROM person WHERE person_id = :personId";
+    //TODO: private static final String SQL_READ_PERSON = "SELECT * FROM person WHERE person_id = :personId JOINS on client_id";
     private static final String SQL_DELETE_PERSON = "DELETE FROM person WHERE person_id = :personId";
     private static final String SQL_UPDATE_PERSON = "UPDATE person SET (first_name, last_name, email_address, street_address, city, state, zip_code)"
                                                   + " = (:firstName, :lastName, :emailAddress, :streetAddress, :city, :state, :zipCode)"

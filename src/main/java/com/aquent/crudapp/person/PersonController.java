@@ -39,6 +39,19 @@ public class PersonController {
     }
 
     /**
+     * Renders the read page.
+     *
+     * @param personId the ID of the person to show
+     * @return show view populated from the person record
+     */
+    @GetMapping(value = "read/{personId}")
+    public ModelAndView read(@PathVariable Integer personId) {
+        ModelAndView mav = new ModelAndView("person/read");
+        mav.addObject("person", personService.readPerson(personId));
+        return mav;
+    }
+
+    /**
      * Renders an empty form used to create a new person record.
      *
      * @return create view populated with an empty person
