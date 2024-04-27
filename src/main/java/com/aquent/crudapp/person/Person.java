@@ -5,16 +5,26 @@ import javax.validation.constraints.Size;
 
 import com.aquent.crudapp.client.Client;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Data;
 
 /**
  * The person entity corresponding to the "person" table in the database.
  */
+@Entity
+@Table(name="persons")
 @Data
 public class Person {
 
+    @Id
+    @GeneratedValue
     private Integer personId;
 
+    @Column(nullable = false)
     @NotNull
     @Size(min = 1, max = 50, message = "First name is required with maximum length of 50")
     private String firstName;
@@ -44,7 +54,8 @@ public class Person {
     private String zipCode;
 
     // TODO: queries load the relationship in JDBC
-    private Client client;
+    // @OneToMany
+    // private Client client;
 
     // public Integer getPersonId() {
     //     return personId;

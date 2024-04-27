@@ -51,6 +51,6 @@ public class Client {
   @Size(min = 5, max = 5, message = "Zip code is required with length 5")
   private String zipCode;
 
-  private List <Person> contacts;  
+  // private List <Person> contacts;
 
 }
