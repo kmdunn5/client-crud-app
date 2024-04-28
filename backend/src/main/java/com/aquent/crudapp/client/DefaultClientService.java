@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
+
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
@@ -17,42 +19,42 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 public class DefaultClientService implements ClientService {
 
-    private final ClientDao clientDao;
+    private final ClientRepository clientRepository;
     private final Validator validator;
 
-    public DefaultClientService(ClientDao clientDao, Validator validator) {
-        this.clientDao = clientDao;
+    public DefaultClientService(ClientRepository clientRepository, Validator validator) {
+        this.clientRepository = clientRepository;
         this.validator = validator;
     }
 
     @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public List<Client> listClients() {
-        return clientDao.listClients();
+        return clientRepository.findAll();
     }
 
     @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public Client readClient(Integer id) {
-        return clientDao.readClient(id);
+    public Client readClient(UUID id) {
+        return clientRepository.getReferenceById(id);
     }
 
     @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = false)
-    public Integer createClient(Client client) {
-        return clientDao.createClient(client);
+    public Client createClient(Client client) {
+        return clientRepository.save(client);
     }
 
     @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = false)
     public void updateClient(Client client) {
-        clientDao.updateClient(client);
+        clientRepository.save(client);
     }
 
     @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = false)
-    public void deleteClient(Integer id) {
-        clientDao.deleteClient(id);
+    public void deleteClient(UUID id) {
+        clientRepository.deleteById(id);
     }
 
     @Override

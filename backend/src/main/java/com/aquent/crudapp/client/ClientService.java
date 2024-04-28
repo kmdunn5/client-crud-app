@@ -1,6 +1,7 @@
 package com.aquent.crudapp.client;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -23,7 +24,7 @@ public interface ClientService {
      * @param client the values to save
      * @return the new client ID
      */
-    Integer createClient(Client client);
+    Client createClient(Client client);
 
     /**
      * Retrieves a client record by ID.
@@ -31,7 +32,7 @@ public interface ClientService {
      * @param id the client ID
      * @return the client record
      */
-    Client readClient(Integer id);
+    Client readClient(UUID id);
 
     /**
      * Updates an existing client record.
@@ -45,7 +46,7 @@ public interface ClientService {
      *
      * @param id the client ID
      */
-    void deleteClient(Integer id);
+    void deleteClient(UUID id);
 
     /**
      * Validates populated client data.
