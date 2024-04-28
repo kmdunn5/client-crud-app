@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material"
+import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material"
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
@@ -8,7 +8,6 @@ import { BASE_URL } from "../utils/url"
 export function PeopleIndex() {
   const [people, setPeople] = useState<Person[]>([])
   const [isLoading, setIsLoading] = useState<Boolean>(false)
-
 
   useEffect(() => {
     setIsLoading(true);
@@ -28,7 +27,31 @@ export function PeopleIndex() {
     <Box>
       <Typography>Person Index</Typography>
       <Link to="/person/new">Create New Person</Link>
-      {/* <Link to="/person/new">View Person</Link> */}
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell>First Name</TableCell>
+              <TableCell align="right">Last Name</TableCell>
+              <TableCell align="right">Email</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {people.map((person) => (
+              <TableRow
+                key={person.personId}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell component="th" scope="person">
+                  {person.firstName}
+                </TableCell>
+                <TableCell align="right">{person.lastName}</TableCell>
+                <TableCell align="right">{person.emailAddress}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </Box>
   )
 }

@@ -2,20 +2,20 @@ import { Box, Typography } from "@mui/material"
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
-import { Client } from "../../types/Client"
+import { Person } from "../../types/Person"
 import { BASE_URL } from "../utils/url"
 
-export function ClientIndex() {
-  const [clients, setClients] = useState<Client[]>([])
+export function ClientRead() {
+  const [people, setPeople] = useState<Person[]>([])
   const [isLoading, setIsLoading] = useState<Boolean>(false)
 
   useEffect(() => {
     setIsLoading(true);
     axios
-      .get(`${BASE_URL}/client/list`)
+      .get(`${BASE_URL}/person/list`)
       .then((response) => {
         console.log(response.data)
-        setClients(response.data);
+        setPeople(response.data);
       })
       .finally(() => {
         setIsLoading(false);
@@ -25,9 +25,9 @@ export function ClientIndex() {
 
   return (
     <Box>
-      <Typography>Client Index</Typography>
-      <Link to="/client/new">Create New Client</Link>
-      {/* <Link to="/client/new">View Person</Link> */}
+      <Typography>Person Index</Typography>
+      <Link to="/person/new">Create New Person</Link>
+      {/* <Link to="/person/new">View Person</Link> */}
     </Box>
   )
 }
