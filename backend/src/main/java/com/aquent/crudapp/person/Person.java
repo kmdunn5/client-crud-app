@@ -1,5 +1,8 @@
 package com.aquent.crudapp.person;
 
+import java.io.Serializable;
+import java.util.UUID;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -7,8 +10,10 @@ import com.aquent.crudapp.client.Client;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -18,11 +23,12 @@ import lombok.Data;
 @Entity
 @Table(name="persons")
 @Data
-public class Person {
+public class Person implements Serializable {
 
     @Id
-    @GeneratedValue
-    private Integer personId;
+    // @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID personId;
 
     @Column(nullable = false)
     @NotNull
@@ -54,7 +60,7 @@ public class Person {
     private String zipCode;
 
     // TODO: queries load the relationship in JDBC
-    // @OneToMany
+    // @OneToOne
     // private Client client;
 
     // public Integer getPersonId() {

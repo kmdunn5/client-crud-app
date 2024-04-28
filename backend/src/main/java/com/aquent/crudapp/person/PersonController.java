@@ -2,6 +2,7 @@ package com.aquent.crudapp.person;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,7 +46,7 @@ public class PersonController {
      * @return show view populated from the person record
      */
     @GetMapping(value = "read/{personId}")
-    public ModelAndView read(@PathVariable Integer personId) {
+    public ModelAndView read(@PathVariable UUID personId) {
         ModelAndView mav = new ModelAndView("person/read");
         mav.addObject("person", personService.readPerson(personId));
         return mav;
@@ -93,7 +94,7 @@ public class PersonController {
      * @return edit view populated from the person record
      */
     @GetMapping(value = "edit/{personId}")
-    public ModelAndView edit(@PathVariable Integer personId) {
+    public ModelAndView edit(@PathVariable UUID personId) {
         ModelAndView mav = new ModelAndView("person/edit");
         mav.addObject("person", personService.readPerson(personId));
         mav.addObject("errors", new ArrayList<String>());
@@ -129,9 +130,9 @@ public class PersonController {
      * @return delete view populated from the person record
      */
     @GetMapping(value = "delete/{personId}")
-    public ModelAndView delete(@PathVariable Integer personId) {
+    public ModelAndView delete(@PathVariable("personId") String personId) {
         ModelAndView mav = new ModelAndView("person/delete");
-        mav.addObject("person", personService.readPerson(personId));
+        mav.addObject("person", personService.readPerson(UUID.fromString(personId)));
         return mav;
     }
 
@@ -143,7 +144,7 @@ public class PersonController {
      * @return redirect to the listing page
      */
     @PostMapping(value = "delete")
-    public String delete(@RequestParam String command, @RequestParam Integer personId) {
+    public String delete(@RequestParam String command, @RequestParam UUID personId) {
         if (COMMAND_DELETE.equals(command)) {
             personService.deletePerson(personId);
         }

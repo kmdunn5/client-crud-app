@@ -1,5 +1,6 @@
 package com.aquent.crudapp.client;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
@@ -15,7 +16,7 @@ import lombok.Data;
 
 @Entity
 @Data
-public class Client {
+public class Client implements Serializable{
 
   @Id
   @GeneratedValue
@@ -51,6 +52,7 @@ public class Client {
   @Size(min = 5, max = 5, message = "Zip code is required with length 5")
   private String zipCode;
 
+  // @OneToMany
   // private List <Person> contacts;
 
 }
