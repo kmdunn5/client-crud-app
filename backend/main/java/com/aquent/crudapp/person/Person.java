@@ -1,5 +1,7 @@
 package com.aquent.crudapp.person;
 
+import java.io.Serializable;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -18,7 +20,7 @@ import lombok.Data;
 @Entity
 @Table(name="persons")
 @Data
-public class Person {
+public class Person implements Serializable{
 
     @Id
     @GeneratedValue
