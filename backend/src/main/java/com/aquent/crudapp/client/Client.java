@@ -1,12 +1,10 @@
 package com.aquent.crudapp.client;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.UUID;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import com.aquent.crudapp.person.Person;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,9 +17,8 @@ import lombok.Data;
 public class Client implements Serializable{
 
   @Id
-  @GeneratedValue
-  // @GeneratedValue(strategy = GenerationType.UUID)
-  private Integer clientId;
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private UUID clientId;
 
   @NotNull
   @Size(min = 1, max = 50, message = "Company Name is required with maximum length of 50")
@@ -52,7 +49,7 @@ public class Client implements Serializable{
   @Size(min = 5, max = 5, message = "Zip code is required with length 5")
   private String zipCode;
 
-  // @OneToMany
-  // private List <Person> contacts;
+  // @OneToMany(mappedBy = "client")
+  // private Set<Person> contacts;
 
 }

@@ -2,6 +2,7 @@ package com.aquent.crudapp.client;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -80,7 +81,7 @@ public class ClientController {
      * @return edit view populated from the client record
      */
     @GetMapping(value = "edit/{clientId}")
-    public ModelAndView edit(@PathVariable Integer clientId) {
+    public ModelAndView edit(@PathVariable UUID clientId) {
         ModelAndView mav = new ModelAndView("client/edit");
         mav.addObject("client", clientService.readClient(clientId));
         mav.addObject("errors", new ArrayList<String>());
@@ -116,7 +117,7 @@ public class ClientController {
      * @return delete view populated from the client record
      */
     @GetMapping(value = "delete/{clientId}")
-    public ModelAndView delete(@PathVariable Integer clientId) {
+    public ModelAndView delete(@PathVariable UUID clientId) {
         ModelAndView mav = new ModelAndView("client/delete");
         mav.addObject("client", clientService.readClient(clientId));
         return mav;
@@ -130,7 +131,7 @@ public class ClientController {
      * @return redirect to the listing page
      */
     @PostMapping(value = "delete")
-    public String delete(@RequestParam String command, @RequestParam Integer clientId) {
+    public String delete(@RequestParam String command, @RequestParam UUID clientId) {
         if (COMMAND_DELETE.equals(command)) {
             clientService.deleteClient(clientId);
         }

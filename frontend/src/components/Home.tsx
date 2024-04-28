@@ -1,9 +1,11 @@
-import logo from "../logo.svg"
+import { Link } from "react-router-dom"
 
 export function Home() {
   return (
     <header className="App-header">
-      <img src={logo} className="App-logo" alt="logo" />
+      <Link to="/people" >People</Link>
+      <Link to="/clients" >Clients</Link>
+      {/* <img src={logo} className="App-logo" alt="logo" />
       <p>
         Edit <code>src/App.tsx</code> and save to reload.
       </p>
@@ -14,7 +16,7 @@ export function Home() {
         rel="noopener noreferrer"
       >
         Learn React
-      </a>
+      </a> */}
     </header>
   )
 }

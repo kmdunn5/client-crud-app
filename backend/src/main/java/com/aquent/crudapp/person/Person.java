@@ -6,14 +6,11 @@ import java.util.UUID;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import com.aquent.crudapp.client.Client;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -26,7 +23,7 @@ import lombok.Data;
 public class Person implements Serializable {
 
     @Id
-    // @GeneratedValue
+    @Column(nullable = false)
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID personId;
 
@@ -59,8 +56,9 @@ public class Person implements Serializable {
     @Size(min = 5, max = 5, message = "Zip code is required with length 5")
     private String zipCode;
 
-    // TODO: queries load the relationship in JDBC
-    // @OneToOne
+    // queries load the relationship in JDBC
+    // @ManyToOne
+    // @JoinColumn(name="client_id")
     // private Client client;
 
     // public Integer getPersonId() {
