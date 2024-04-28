@@ -1,6 +1,7 @@
 package com.aquent.crudapp.person;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -23,7 +24,7 @@ public interface PersonService {
      * @param person the values to save
      * @return the new person ID
      */
-    Integer createPerson(Person person);
+    Person createPerson(Person person);
 
     /**
      * Retrieves a person record by ID.
@@ -31,7 +32,7 @@ public interface PersonService {
      * @param id the person ID
      * @return the person record
      */
-    Person readPerson(Integer id);
+    Person readPerson(UUID id);
 
     /**
      * Updates an existing person record.
@@ -45,7 +46,7 @@ public interface PersonService {
      *
      * @param id the person ID
      */
-    void deletePerson(Integer id);
+    void deletePerson(UUID id);
 
     /**
      * Validates populated person data.

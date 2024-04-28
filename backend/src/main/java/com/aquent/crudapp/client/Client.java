@@ -52,6 +52,7 @@ public class Client implements Serializable{
   @Size(min = 5, max = 5, message = "Zip code is required with length 5")
   private String zipCode;
 
+  // @OneToMany
   // private List <Person> contacts;
 
 }
