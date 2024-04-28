@@ -1,6 +1,6 @@
 package com.aquent.crudapp.person;
 
-import java.util.ArrayList;
+import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 
 /**
  * Controller for handling basic person management operations.
@@ -25,8 +24,6 @@ import org.springframework.web.servlet.ModelAndView;
 @RestController
 @RequestMapping("person")
 public class PersonController {
-
-    public static final String COMMAND_DELETE = "Delete";
 
     private final PersonService personService;
 
@@ -44,12 +41,6 @@ public class PersonController {
         List<Person> persons = personService.listPeople();
         return ResponseEntity.ok().body(persons);
     }
-    // @GetMapping(value = "list")
-    // public ModelAndView list() {
-    //     ModelAndView mav = new ModelAndView("person/list");
-    //     mav.addObject("persons", personService.listPeople());
-    //     return mav;
-    // }
 
     /**
      * Renders the read page.
@@ -64,19 +55,6 @@ public class PersonController {
     }
 
     /**
-     * Renders an empty form used to create a new person record.
-     *
-     * @return create view populated with an empty person
-     */
-    @GetMapping(value = "create")
-    public ModelAndView create() {
-        ModelAndView mav = new ModelAndView("person/create");
-        mav.addObject("person", new Person());
-        mav.addObject("errors", new ArrayList<String>());
-        return mav;
-    }
-
-    /**
      * Validates and saves a new person.
      * On success, the user is redirected to the listing page.
      * On failure, the form is redisplayed with the validation errors.
@@ -87,21 +65,8 @@ public class PersonController {
     
     @PostMapping(value = "create")
     public ResponseEntity<Person> create(@Valid @RequestBody Person person) {
-        return ResponseEntity.ok().body(personService.createPerson(person));
-    }
-    // TODO: fix from here down
-    /**
-     * Renders an edit form for an existing person record.
-     *
-     * @param personId the ID of the person to edit
-     * @return edit view populated from the person record
-     */
-    @GetMapping(value = "edit/{personId}")
-    public ModelAndView edit(@PathVariable UUID personId) {
-        ModelAndView mav = new ModelAndView("person/edit");
-        mav.addObject("person", personService.readPerson(personId));
-        mav.addObject("errors", new ArrayList<String>());
-        return mav;
+        Person createdPerson = personService.createPerson(person);
+        return ResponseEntity.created(URI.create("person/" + createdPerson.getPersonId())).body(createdPerson);
     }
 
     /**
@@ -113,36 +78,19 @@ public class PersonController {
      * @return redirect, or edit view with errors
      */
     @PostMapping(value = "edit")
-    public ModelAndView edit(Person person) {
-        personService.updatePerson(person);
-        return new ModelAndView("redirect:/person/list");
-    }
-
-    /**
-     * Renders the deletion confirmation page.
-     *
-     * @param personId the ID of the person to be deleted
-     * @return delete view populated from the person record
-     */
-    @GetMapping(value = "delete/{personId}")
-    public ModelAndView delete(@PathVariable("personId") String personId) {
-        ModelAndView mav = new ModelAndView("person/delete");
-        mav.addObject("person", personService.readPerson(UUID.fromString(personId)));
-        return mav;
+    public ResponseEntity<Person> edit(Person person) {
+        return ResponseEntity.ok().body(personService.updatePerson(person));
     }
 
     /**
      * Handles person deletion or cancellation, redirecting to the listing page in either case.
      *
-     * @param command the command field from the form
      * @param personId the ID of the person to be deleted
      * @return redirect to the listing page
      */
     @PostMapping(value = "delete")
-    public String delete(@RequestParam String command, @RequestParam UUID personId) {
-        if (COMMAND_DELETE.equals(command)) {
-            personService.deletePerson(personId);
-        }
-        return "redirect:/person/list";
+    public ResponseEntity<Void> delete(@RequestParam UUID personId) {
+        personService.deletePerson(personId);
+        return ResponseEntity.noContent().build();
     }
 }

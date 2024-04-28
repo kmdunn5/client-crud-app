@@ -1,24 +1,29 @@
 package com.aquent.crudapp.client;
 
-import java.util.ArrayList;
+import java.net.URI;
+import java.util.List;
 import java.util.UUID;
 
-import org.springframework.stereotype.Controller;
+import javax.validation.Valid;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Controller for handling basic client management operations.
  */
-@Controller
+@CrossOrigin(origins = "http://localhost:3000", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE})
+@RestController
 @RequestMapping("client")
 public class ClientController {
-
-    public static final String COMMAND_DELETE = "Delete";
 
     private final ClientService clientService;
 
@@ -29,26 +34,24 @@ public class ClientController {
     /**
      * Renders the listing page.
      *
-     * @return list view populated with the current list of clients
+     * @return the current list of clients
      */
     @GetMapping(value = "list")
-    public ModelAndView list() {
-        ModelAndView mav = new ModelAndView("client/list");
-        mav.addObject("clients", clientService.listClients());
-        return mav;
+    public ResponseEntity<List<Client>> findAll() {
+        List<Client> clients = clientService.listClients();
+        return ResponseEntity.ok().body(clients);
     }
 
     /**
-     * Renders an empty form used to create a new client record.
+     * Renders the read page.
      *
-     * @return create view populated with an empty client
+     * @param clientId the ID of the client to show
+     * @return the client record
      */
-    @GetMapping(value = "create")
-    public ModelAndView create() {
-        ModelAndView mav = new ModelAndView("client/create");
-        mav.addObject("client", new Client());
-        mav.addObject("errors", new ArrayList<String>());
-        return mav;
+    @GetMapping(value = "read/{clientId}")
+    public ResponseEntity<Client> read(@PathVariable UUID clientId) {
+        Client client = clientService.readClient(clientId);
+        return ResponseEntity.ok().body(client);
     }
 
     /**
@@ -57,26 +60,13 @@ public class ClientController {
      * On failure, the form is redisplayed with the validation errors.
      *
      * @param client populated form bean for the client
-     * @return redirect, or create view with errors
+     * @return response entity with a client record
      */
+    
     @PostMapping(value = "create")
-    public ModelAndView create(Client client) {;
-        clientService.createClient(client);
-        return new ModelAndView("redirect:/client/list");
-    }
-
-    /**
-     * Renders an edit form for an existing client record.
-     *
-     * @param clientId the ID of the client to edit
-     * @return edit view populated from the client record
-     */
-    @GetMapping(value = "edit/{clientId}")
-    public ModelAndView edit(@PathVariable UUID clientId) {
-        ModelAndView mav = new ModelAndView("client/edit");
-        mav.addObject("client", clientService.readClient(clientId));
-        mav.addObject("errors", new ArrayList<String>());
-        return mav;
+    public ResponseEntity<Client> create(@Valid @RequestBody Client client) {
+        Client createdClient = clientService.createClient(client);
+        return ResponseEntity.created(URI.create("client/" + createdClient.getClientId())).body(createdClient);
     }
 
     /**
@@ -88,36 +78,19 @@ public class ClientController {
      * @return redirect, or edit view with errors
      */
     @PostMapping(value = "edit")
-    public ModelAndView edit(Client client) {
-        clientService.updateClient(client);
-        return new ModelAndView("redirect:/client/list");
-    }
-
-    /**
-     * Renders the deletion confirmation page.
-     *
-     * @param clientId the ID of the client to be deleted
-     * @return delete view populated from the client record
-     */
-    @GetMapping(value = "delete/{clientId}")
-    public ModelAndView delete(@PathVariable UUID clientId) {
-        ModelAndView mav = new ModelAndView("client/delete");
-        mav.addObject("client", clientService.readClient(clientId));
-        return mav;
+    public ResponseEntity<Client> edit(Client client) {
+        return ResponseEntity.ok().body(clientService.updateClient(client));
     }
 
     /**
      * Handles client deletion or cancellation, redirecting to the listing page in either case.
      *
-     * @param command the command field from the form
      * @param clientId the ID of the client to be deleted
      * @return redirect to the listing page
      */
     @PostMapping(value = "delete")
-    public String delete(@RequestParam String command, @RequestParam UUID clientId) {
-        if (COMMAND_DELETE.equals(command)) {
-            clientService.deleteClient(clientId);
-        }
-        return "redirect:/client/list";
+    public ResponseEntity<Void> delete(@RequestParam UUID clientId) {
+        clientService.deleteClient(clientId);
+        return ResponseEntity.noContent().build();
     }
 }

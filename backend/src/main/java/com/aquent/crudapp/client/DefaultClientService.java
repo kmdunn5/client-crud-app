@@ -41,8 +41,8 @@ public class DefaultClientService implements ClientService {
 
     @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = false)
-    public void updateClient(Client client) {
-        clientRepository.save(client);
+    public Client updateClient(Client client) {
+        return clientRepository.save(client);
     }
 
     @Override

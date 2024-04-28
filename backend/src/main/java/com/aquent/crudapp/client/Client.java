@@ -12,6 +12,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Entity
@@ -34,15 +36,23 @@ public class Client implements Serializable{
   // Make this another class/struct?
   // private String mailingAddress;
   @Column(nullable = false, length = 50)
+  @NotNull
+  @Size(min = 1, max = 50, message = "Street address is required with maximum length of 50")
   private String streetAddress;
-  
+
   @Column(nullable = false, length = 50)
+  @NotNull
+  @Size(min = 1, max = 50, message = "City is required with maximum length of 50")
   private String city;
-  
-  @Column(nullable = false , length = 2)
+
+  @Column(nullable = false, length = 2)
+  @NotNull
+  @Size(min = 2, max = 2, message = "State is required with length 2")
   private String state;
-  
+
   @Column(nullable = false, length = 5)
+  @NotNull
+  @Size(min = 5, max = 5, message = "Zip code is required with length 5")
   private String zipCode;
 
   @OneToMany(mappedBy = "client")

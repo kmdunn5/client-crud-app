@@ -39,7 +39,7 @@ public interface ClientService {
      *
      * @param client the new values to save
      */
-    void updateClient(Client client);
+    Client updateClient(Client client);
 
     /**
      * Deletes a client record by ID.

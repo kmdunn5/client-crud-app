@@ -39,7 +39,7 @@ public interface PersonService {
      *
      * @param person the new values to save
      */
-    void updatePerson(Person person);
+    Person updatePerson(Person person);
 
     /**
      * Deletes a person record by ID.

@@ -16,7 +16,7 @@ export function ClientForm({clientId}: ClientFormProps) {
   useEffect(() => {
     if (clientId) {
       axios
-        .get(`${BASE_URL}/person/${clientId}`)
+        .get(`${BASE_URL}/client/${clientId}`)
         .then((response) => {
           console.log(response.data)
           Object.entries(response.data).forEach(([k, v]) => {
@@ -29,7 +29,7 @@ export function ClientForm({clientId}: ClientFormProps) {
 
   useEffect(() => {
     axios
-      .get(`${BASE_URL}/client/list`)
+      .get(`${BASE_URL}/person/list`)
       .then((response) => {
         console.log(response.data)
         setPeople(response.data)
@@ -65,15 +65,15 @@ export function ClientForm({clientId}: ClientFormProps) {
           <TextField id="state" label="State" variant="outlined" {...register("state", { required: true })}/>
           <TextField id="zipCode" label="Zip Code" variant="outlined" {...register("zipCode", { required: true })}/>
           {errors.zipCode && <span>This field is required</span>}
-          {/* <Button variant="outlined">Submit</Button> */}
           {
             people.length > 0 && 
             <>
-              <InputLabel id="client">Pick My Client</InputLabel>
+              <InputLabel id="client">Who are my Contacts?</InputLabel>
               <Select
                 multiple
+                value={[]}
                 labelId="client"
-                id="clientId"
+                id="client"
                 label="Client"
                 {...register("clientId")}
               >

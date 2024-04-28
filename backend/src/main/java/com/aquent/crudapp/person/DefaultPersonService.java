@@ -40,8 +40,8 @@ public class DefaultPersonService implements PersonService {
 
     @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = false)
-    public void updatePerson(Person person) {
-        personRepository.save(person);
+    public Person updatePerson(Person person) {
+        return personRepository.save(person);
     }
 
     @Override
