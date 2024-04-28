@@ -47,12 +47,4 @@ public interface ClientService {
      * @param id the client ID
      */
     void deleteClient(UUID id);
-
-    /**
-     * Validates populated client data.
-     *
-     * @param client the values to validate
-     * @return list of error messages
-     */
-    List<String> validateClient(Client client);
 }

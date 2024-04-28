@@ -47,12 +47,4 @@ public interface PersonService {
      * @param id the person ID
      */
     void deletePerson(UUID id);
-
-    /**
-     * Validates populated person data.
-     *
-     * @param person the values to validate
-     * @return list of error messages
-     */
-    List<String> validatePerson(Person person);
 }

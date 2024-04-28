@@ -4,7 +4,7 @@ export interface Person {
   personId: string
   firstName: string
   lastName: string
-  email: string
+  emailAddress: string
   mailingAddress?: Address
   streetAddress: string // does this address become it's own object?
   city: string

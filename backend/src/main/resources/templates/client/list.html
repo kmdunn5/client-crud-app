@@ -23,7 +23,7 @@
           <th:block th:each="client : ${clients}">
             <tr>
               <td th:text="${client.companyName}">Name</td>
-              <td th:text="${client.websiteURI}">website.com</td>
+              <td th:text="${client.websiteUri}">website.com</td>
               <td th:text="${client.phoneNumber}">1234567890</td>
               <td>
                 <a th:href="'/client/edit/' + ${client.clientId}">Edit Client</a>

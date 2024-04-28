@@ -1,7 +1,6 @@
 package com.aquent.crudapp.client;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Controller;
@@ -61,17 +60,9 @@ public class ClientController {
      * @return redirect, or create view with errors
      */
     @PostMapping(value = "create")
-    public ModelAndView create(Client client) {
-        List<String> errors = clientService.validateClient(client);
-        if (errors.isEmpty()) {
-            clientService.createClient(client);
-            return new ModelAndView("redirect:/client/list");
-        } else {
-            ModelAndView mav = new ModelAndView("client/create");
-            mav.addObject("client", client);
-            mav.addObject("errors", errors);
-            return mav;
-        }
+    public ModelAndView create(Client client) {;
+        clientService.createClient(client);
+        return new ModelAndView("redirect:/client/list");
     }
 
     /**
@@ -98,16 +89,8 @@ public class ClientController {
      */
     @PostMapping(value = "edit")
     public ModelAndView edit(Client client) {
-        List<String> errors = clientService.validateClient(client);
-        if (errors.isEmpty()) {
-            clientService.updateClient(client);
-            return new ModelAndView("redirect:/client/list");
-        } else {
-            ModelAndView mav = new ModelAndView("client/edit");
-            mav.addObject("client", client);
-            mav.addObject("errors", errors);
-            return mav;
-        }
+        clientService.updateClient(client);
+        return new ModelAndView("redirect:/client/list");
     }
 
     /**

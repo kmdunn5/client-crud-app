@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import javax.validation.Valid;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,7 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 /**
  * Controller for handling basic person management operations.
  */
-@CrossOrigin(origins = "http://localhost:3000", methods = {RequestMethod.GET})
+@CrossOrigin(origins = "http://localhost:3000", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE})
 @RestController
 @RequestMapping("person")
 public class PersonController {
@@ -55,10 +58,9 @@ public class PersonController {
      * @return show view populated from the person record
      */
     @GetMapping(value = "read/{personId}")
-    public ModelAndView read(@PathVariable UUID personId) {
-        ModelAndView mav = new ModelAndView("person/read");
-        mav.addObject("person", personService.readPerson(personId));
-        return mav;
+    public ResponseEntity<Person> read(@PathVariable UUID personId) {
+        Person person = personService.readPerson(personId);
+        return ResponseEntity.ok().body(person);
     }
 
     /**
@@ -82,20 +84,12 @@ public class PersonController {
      * @param person populated form bean for the person
      * @return redirect, or create view with errors
      */
+    
     @PostMapping(value = "create")
-    public ModelAndView create(Person person) {
-        List<String> errors = personService.validatePerson(person);
-        if (errors.isEmpty()) {
-            personService.createPerson(person);
-            return new ModelAndView("redirect:/person/list");
-        } else {
-            ModelAndView mav = new ModelAndView("person/create");
-            mav.addObject("person", person);
-            mav.addObject("errors", errors);
-            return mav;
-        }
+    public ResponseEntity<Person> create(@Valid @RequestBody Person person) {
+        return ResponseEntity.ok().body(personService.createPerson(person));
     }
-
+    // TODO: fix from here down
     /**
      * Renders an edit form for an existing person record.
      *
@@ -120,16 +114,8 @@ public class PersonController {
      */
     @PostMapping(value = "edit")
     public ModelAndView edit(Person person) {
-        List<String> errors = personService.validatePerson(person);
-        if (errors.isEmpty()) {
-            personService.updatePerson(person);
-            return new ModelAndView("redirect:/person/list");
-        } else {
-            ModelAndView mav = new ModelAndView("person/edit");
-            mav.addObject("person", person);
-            mav.addObject("errors", errors);
-            return mav;
-        }
+        personService.updatePerson(person);
+        return new ModelAndView("redirect:/person/list");
     }
 
     /**

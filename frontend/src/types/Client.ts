@@ -3,7 +3,7 @@ import { Address } from "./Address"
 export interface Client {
   clientId: string
   name: string
-  websiteURI: string
+  websiteUri: string
   phoneNumber: string
   mailingAddress?: Address
   streetAddress: string
