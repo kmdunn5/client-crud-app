@@ -1,3 +1,8 @@
 {
-  "java.configuration.updateBuildConfiguration": "automatic"
+  "java.configuration.updateBuildConfiguration": "automatic",
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit"
+  },
+  "javascript.format.semicolons": "remove",
+  "typescript.format.semicolons": "remove"
 }

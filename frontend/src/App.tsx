@@ -1,24 +1,30 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Route, Routes } from 'react-router-dom'
+import './App.css'
+import { ClientIndex } from './components/Clients/ClientsIndex'
+import { Home } from './components/Home'
+import { PeopleIndex } from './components/People/PeopleIndex'
+import { PersonRead } from './components/People/PersonRead'
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Routes>
+        <Route path='/' element={<Home/>} />
+        <Route path="/person/:id" element={<PersonRead />}/>
+        <Route 
+          path='/people'
+          element={<PeopleIndex />}
+          // loader={async ({ params }) => {
+          //   return fetch(
+          //     `/fake/api/teams/${params.id}.json`
+          //   );
+          // }}
+          // action={async ({ request }) => {
+          //   return updateFakeTeam(await request.formData());
+          // }}
+        />
+        <Route path='/clients' element={<ClientIndex />} />
+      </Routes>
     </div>
   );
 }
