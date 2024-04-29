@@ -1,7 +1,8 @@
-import { Box, FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material"
+import { Box, Button, FormControl, FormLabel, MenuItem, Select, TextField } from "@mui/material"
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
+import { useNavigate } from "react-router-dom"
 import { Client } from "../../types/Client"
 import { BASE_URL } from "../utils/url"
 
@@ -24,6 +25,7 @@ export interface PersonFormType {
 export function PersonForm({personId}: PersonFormProps) {
   const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm<PersonFormType>()
   const [clients, setClients] = useState<Client[]>([])
+  const navigate = useNavigate()
 
   const clientId = watch("clientId")
 
@@ -32,7 +34,7 @@ export function PersonForm({personId}: PersonFormProps) {
       axios
         .get(`${BASE_URL}/person/${personId}`)
         .then((response) => {
-          console.log(response.data)
+          // This is forcing this to work, I'm sure there's a better way.
           Object.entries<string | Client>(response.data).forEach(([k, v]) => {
             if (k === "client" && typeof v !== "string") {
               setValue("clientId", v?.clientId)
@@ -49,7 +51,6 @@ export function PersonForm({personId}: PersonFormProps) {
     axios
       .get(`${BASE_URL}/client/list`)
       .then((response) => {
-        console.log(response.data)
         setClients(response.data)
       })
       .catch((error) => console.log(error))
@@ -60,7 +61,7 @@ export function PersonForm({personId}: PersonFormProps) {
     const axiosRouter = personId ? axios.put : axios.post
     axiosRouter(`${BASE_URL}/person${personId ? "/" + personId : ""}`, {...data, client}, {headers: {"Content-Type": "application/json"}})
       .then((response) => {
-        console.log(response)
+        navigate(`/persons/${response.data.personId}`)
       })
       .catch((error) => {
         if (error.code == 400) {
@@ -75,30 +76,30 @@ export function PersonForm({personId}: PersonFormProps) {
     <Box>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl>
-          <TextField id="firstName" label="First Name" variant="outlined" {...register( "firstName", { required: true } )}/>
+          {/* this would all be better as controllers */}
+          <TextField error={errors.firstName != undefined} sx={{marginBottom: "8px"}} id="firstName" label="First Name" variant="outlined" {...register( "firstName", { required: true } )}/>
           {errors.firstName && <span>This field is required</span>}
-          <TextField id="lastName" label="Last Name" variant="outlined" {...register("lastName", { required: true })}/>
+          <TextField error={errors.lastName != undefined} sx={{marginBottom: "8px"}} id="lastName" label="Last Name" variant="outlined" {...register("lastName", { required: true })}/>
+          {errors.lastName && <span>This field is required</span>}
+          <TextField error={errors.emailAddress != undefined} sx={{marginBottom: "8px"}} id="emailAddress" label="Email Address" variant="outlined" {...register("emailAddress", { required: true })}/>
+          {errors.emailAddress && <span>This field is required</span>}
+          <TextField error={errors.streetAddress != undefined} sx={{marginBottom: "8px"}} id="streetAddress" label="Street Address" variant="outlined" {...register("streetAddress", { required: true })}/>
+          {errors.streetAddress && <span>This field is required</span>}
+          <TextField error={errors.city != undefined} sx={{marginBottom: "8px"}} id="city" label="City" variant="outlined" {...register("city", { required: true })}/>
+          {errors.city && <span>This field is required</span>}
+          <TextField error={errors.state != undefined} sx={{marginBottom: "8px"}} id="state" label="State" variant="outlined" {...register("state", { required: true, minLength: 2, maxLength: 2 })}/>
+          {errors.state && <span>This field is required</span>}
+          <TextField error={errors.zipCode != undefined} sx={{marginBottom: "8px"}} id="zipCode" label="Zip Code" variant="outlined" {...register("zipCode", { required: true, minLength: 5, maxLength: 5})}/>
           {errors.zipCode && <span>This field is required</span>}
-          <TextField id="emailAddress" label="Email Address" variant="outlined" {...register("emailAddress", { required: true })}/>
-          {errors.zipCode && <span>This field is required</span>}
-          <TextField id="streetAddress" label="Email" variant="outlined" {...register("streetAddress", { required: true })}/>
-          {errors.zipCode && <span>This field is required</span>}
-          <TextField id="city" label="City" variant="outlined" {...register("city", { required: true })}/>
-          {errors.zipCode && <span>This field is required</span>}
-          <TextField id="state" label="State" variant="outlined" {...register("state", { required: true })}/>
-          {errors.zipCode && <span>This field is required</span>}
-          <TextField id="zipCode" label="Zip Code" variant="outlined" {...register("zipCode", { required: true })}/>
-          {errors.zipCode && <span>{errors.zipCode.message?.toString()}</span>}
-          {/* <Button variant="outlined">Submit</Button> */}
           {
             clients.length > 0 && 
             <>
-              <InputLabel id="client">Pick My Client</InputLabel>
+              <FormLabel sx={{marginTop:"16px"}} id="client">Pick My Client</FormLabel>
               <Select
                 labelId="client"
                 value={clientId}
+                placeholder="Client"
                 id="client"
-                label="Client"
                 {...register("clientId")}
               >
                 {clients.map((client) =>
@@ -107,7 +108,7 @@ export function PersonForm({personId}: PersonFormProps) {
               </Select>
             </>
           }
-          <input type="submit" />
+          <Button sx={{marginBottom: "8px"}}variant="contained" type="submit">Submit</Button>
         </FormControl>
       </form>
     </Box>

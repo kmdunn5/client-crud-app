@@ -26,7 +26,7 @@ export function PeopleIndex() {
   return (
     <Box>
       <Typography>Person Index</Typography>
-      <Link to="/person/new">Create New Person</Link>
+      <Link to="/persons/new">Create New Person</Link>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
@@ -40,7 +40,7 @@ export function PeopleIndex() {
             {people.map((person) => (
               <TableRow
                 component={Link}
-                to={`/person/${person.personId}`}
+                to={`/persons/${person.personId}`}
                 key={person.personId}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >

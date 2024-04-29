@@ -91,7 +91,7 @@ public class PersonController {
      */
     @PutMapping(value = "{personId}")
     public ResponseEntity<PersonDTO> edit(@Valid @RequestBody() PersonDTO person) throws JsonProcessingException {
-        logger.info("person: ", mapper.writeValueAsString(person));
+        logger.info("person: {}", mapper.writeValueAsString(person));
         return ResponseEntity.ok().body(personService.updatePerson(person.toDAO(true)).toDTO(true));
     }
 

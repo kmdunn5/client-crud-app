@@ -26,8 +26,8 @@ export function ClientIndex() {
   return (
     <Box>
       <Typography>Client Index</Typography>
-      <Link to="/client/new">Create New Client</Link>
-      {/* <Link to="/client/new">View Person</Link> */}
+      <Link to="/clients/new">Create New Client</Link>
+      {/* <Link to="/clients/new">View Person</Link> */}
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
@@ -40,7 +40,7 @@ export function ClientIndex() {
             {clients.map((client) => (
               <TableRow
                 component={Link}
-                to={`/client/${client.clientId}`}
+                to={`/clients/${client.clientId}`}
                 key={client.clientId}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 
