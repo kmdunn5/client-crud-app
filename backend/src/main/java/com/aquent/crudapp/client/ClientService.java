@@ -16,7 +16,7 @@ public interface ClientService {
      *
      * @return list of client records
      */
-    List<Client> listClients();
+    List<ClientDAO> listClients();
 
     /**
      * Creates a new client record.
@@ -24,7 +24,7 @@ public interface ClientService {
      * @param client the values to save
      * @return the new client ID
      */
-    Client createClient(Client client);
+    ClientDAO createClient(ClientDAO client);
 
     /**
      * Retrieves a client record by ID.
@@ -32,14 +32,14 @@ public interface ClientService {
      * @param id the client ID
      * @return the client record
      */
-    Client readClient(UUID id);
+    ClientDAO readClient(UUID id);
 
     /**
      * Updates an existing client record.
      *
      * @param client the new values to save
      */
-    Client updateClient(Client client);
+    ClientDAO updateClient(ClientDAO client);
 
     /**
      * Deletes a client record by ID.

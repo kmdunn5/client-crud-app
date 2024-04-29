@@ -23,25 +23,25 @@ public class DefaultClientService implements ClientService {
 
     @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public List<Client> listClients() {
+    public List<ClientDAO> listClients() {
         return clientRepository.findAll(Sort.by("name", "clientId"));
     }
 
     @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public Client readClient(UUID id) {
+    public ClientDAO readClient(UUID id) {
         return clientRepository.getReferenceById(id);
     }
 
     @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = false)
-    public Client createClient(Client client) {
+    public ClientDAO createClient(ClientDAO client) {
         return clientRepository.save(client);
     }
 
     @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = false)
-    public Client updateClient(Client client) {
+    public ClientDAO updateClient(ClientDAO client) {
         return clientRepository.save(client);
     }
 

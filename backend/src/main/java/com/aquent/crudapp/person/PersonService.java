@@ -16,7 +16,7 @@ public interface PersonService {
      *
      * @return list of person records
      */
-    List<Person> listPeople();
+    List<PersonDAO> listPeople();
 
     /**
      * Creates a new person record.
@@ -24,7 +24,7 @@ public interface PersonService {
      * @param person the values to save
      * @return the new person ID
      */
-    Person createPerson(Person person);
+    PersonDAO createPerson(PersonDAO person);
 
     /**
      * Retrieves a person record by ID.
@@ -32,14 +32,14 @@ public interface PersonService {
      * @param id the person ID
      * @return the person record
      */
-    Person readPerson(UUID id);
+    PersonDAO readPerson(UUID id);
 
     /**
      * Updates an existing person record.
      *
      * @param person the new values to save
      */
-    Person updatePerson(Person person);
+    PersonDAO updatePerson(PersonDAO person);
 
     /**
      * Deletes a person record by ID.

@@ -1,24 +1,31 @@
 package com.aquent.crudapp.client;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
-import com.aquent.crudapp.person.Person;
+import com.aquent.crudapp.person.PersonDAO;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-public class Client implements Serializable{
+@Table(name="clients")
+@AllArgsConstructor
+@NoArgsConstructor
+public class ClientDAO implements Serializable{
 
   @Id
   @Column(nullable = false)
@@ -36,26 +43,27 @@ public class Client implements Serializable{
   // Make this another class/struct?
   // private String mailingAddress;
   @Column(nullable = false, length = 50)
-  @NotNull
-  @Size(min = 1, max = 50, message = "Street address is required with maximum length of 50")
   private String streetAddress;
 
   @Column(nullable = false, length = 50)
-  @NotNull
-  @Size(min = 1, max = 50, message = "City is required with maximum length of 50")
   private String city;
 
   @Column(nullable = false, length = 2)
-  @NotNull
-  @Size(min = 2, max = 2, message = "State is required with length 2")
   private String state;
 
   @Column(nullable = false, length = 5)
-  @NotNull
-  @Size(min = 5, max = 5, message = "Zip code is required with length 5")
   private String zipCode;
 
-  @OneToMany(mappedBy = "client")
-  private Set<Person> contacts;
+  @OneToMany
+  @JoinColumn(name = "client_id")
+  private List<PersonDAO> contacts;
+
+  public ClientDTO toDTO() {
+        return this.toDTO(false);
+    }
+
+  public ClientDTO toDTO(boolean transformPerson) {
+        return new ClientDTO(this.clientId, this.name, this.websiteUri, this.phoneNumber, this.streetAddress, this.city, this.state, this.zipCode, this.contacts == null || !transformPerson? Collections.emptyList() : this.contacts.stream().map(PersonDAO::toDTO).collect(Collectors.toList()));
+    }
 
 }

@@ -1,4 +1,5 @@
 import { Address } from "./Address"
+import { Person } from "./Person"
 
 export interface Client {
   clientId: string
@@ -10,5 +11,5 @@ export interface Client {
   city: string
   state: string
   zipCode: string
-  // contacts: Person[]
+  contacts: Person[]
 }

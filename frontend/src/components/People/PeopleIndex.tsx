@@ -39,6 +39,8 @@ export function PeopleIndex() {
           <TableBody>
             {people.map((person) => (
               <TableRow
+                component={Link}
+                to={`/person/${person.personId}`}
                 key={person.personId}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >

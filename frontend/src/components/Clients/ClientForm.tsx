@@ -9,18 +9,38 @@ type ClientFormProps = {
   clientId?: string
 }
 
+interface ClientFormType {
+  clientId: string
+  name: string
+  websiteUri: string
+  phoneNumber: string
+  streetAddress: string
+  city: string
+  state: string
+  zipCode: string
+  contacts: string[]
+}
+
 export function ClientForm({clientId}: ClientFormProps) {
-  const { register, handleSubmit, setValue, formState: { errors } } = useForm()
+  const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm<ClientFormType>({defaultValues: {contacts: []}})
   const [people, setPeople] = useState<Person[]>([])
 
+  let contacts = watch('contacts')
+
   useEffect(() => {
+    console.log(clientId)
     if (clientId) {
+
       axios
         .get(`${BASE_URL}/client/${clientId}`)
         .then((response) => {
           console.log(response.data)
-          Object.entries(response.data).forEach(([k, v]) => {
-            setValue(k, v)
+          Object.entries<string | Person[]>(response.data).forEach(([k, v]) => {
+            if (k === "contacts" && typeof v !== "string") {
+              setValue("contacts", v.map((v) => v.personId))
+            } else {
+              setValue(k as keyof ClientFormType, v as string)
+            }
           })
         })
         .catch((error) => console.log(error))
@@ -38,9 +58,9 @@ export function ClientForm({clientId}: ClientFormProps) {
   }, [])
 
   const onSubmit = (data: any) => {
-    let route = clientId ? `edit/${clientId}` : "create"
-    axios
-      .post(`${BASE_URL}/client/${route}`, data, { headers: { 'Content-Type': 'application/json' }})
+    let contacts = data.contacts.map((id: string) => people.find((person) => person.personId === id))
+    const axiosRouter = clientId ? axios.put : axios.post
+    axiosRouter(`${BASE_URL}/client${clientId ? "/" + clientId : ""}`, {...data, contacts}, {headers: {"Content-Type": "application/json"}})
       .then((response) => {
         console.log(response)
       })
@@ -68,14 +88,14 @@ export function ClientForm({clientId}: ClientFormProps) {
           {
             people.length > 0 && 
             <>
-              <InputLabel id="client">Who are my Contacts?</InputLabel>
+              <InputLabel id="contacts">Who are my Contacts?</InputLabel>
               <Select
                 multiple
-                value={[]}
-                labelId="client"
-                id="client"
-                label="Client"
-                {...register("clientId")}
+                value={contacts}
+                labelId="contacts"
+                id="contacts"
+                label="contacts"
+                {...register("contacts")}
               >
                 {people.map((person) =>
                   <MenuItem value={person.personId}>{person.firstName + " " + person.lastName}</MenuItem>

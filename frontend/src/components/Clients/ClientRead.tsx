@@ -11,7 +11,6 @@ export function ClientRead() {
   const [isLoading, setIsLoading] = useState<Boolean>(false)
 
   useEffect(() => {
-    console.log("a;lksdjfl;kasjdf")
     setIsLoading(true);
     axios
       .get(`${BASE_URL}/client/${id}`)

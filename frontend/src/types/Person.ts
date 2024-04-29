@@ -1,4 +1,5 @@
 import { Address } from "./Address"
+import { Client } from "./Client"
 
 export interface Person {
   personId: string
@@ -10,5 +11,5 @@ export interface Person {
   city: string
   state: string //Could be an enum of state abbreviations if I want
   zipCode: string
-  // client: Client
+  client: Client
 }

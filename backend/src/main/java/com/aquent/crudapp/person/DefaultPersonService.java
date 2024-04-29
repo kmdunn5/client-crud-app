@@ -22,25 +22,25 @@ public class DefaultPersonService implements PersonService {
 
     @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public List<Person> listPeople() {
+    public List<PersonDAO> listPeople() {
         return personRepository.findAll(Sort.by("firstName", "lastName", "personId"));
     }
 
     @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public Person readPerson(UUID id) {
+    public PersonDAO readPerson(UUID id) {
         return personRepository.getReferenceById(id);
     }
 
     @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = false)
-    public Person createPerson(Person person) {
+    public PersonDAO createPerson(PersonDAO person) {
         return personRepository.save(person);
     }
 
     @Override
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = false)
-    public Person updatePerson(Person person) {
+    public PersonDAO updatePerson(PersonDAO person) {
         return personRepository.save(person);
     }
 

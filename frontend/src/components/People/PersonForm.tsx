@@ -9,9 +9,23 @@ type PersonFormProps = {
   personId?: string
 }
 
+export interface PersonFormType {
+  personId: string
+  firstName: string
+  lastName: string
+  emailAddress: string
+  streetAddress: string // does this address become it's own object?
+  city: string
+  state: string //Could be an enum of state abbreviations if I want
+  zipCode: string
+  clientId?: string
+}
+
 export function PersonForm({personId}: PersonFormProps) {
-  const { register, handleSubmit, setValue, formState: { errors } } = useForm()
+  const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm<PersonFormType>()
   const [clients, setClients] = useState<Client[]>([])
+
+  const clientId = watch("clientId")
 
   useEffect(() => {
     if (personId) {
@@ -19,8 +33,12 @@ export function PersonForm({personId}: PersonFormProps) {
         .get(`${BASE_URL}/person/${personId}`)
         .then((response) => {
           console.log(response.data)
-          Object.entries(response.data).forEach(([k, v]) => {
-            setValue(k, v)
+          Object.entries<string | Client>(response.data).forEach(([k, v]) => {
+            if (k === "client" && typeof v !== "string") {
+              setValue("clientId", v?.clientId)
+            } else {
+              setValue(k as keyof PersonFormType, v as string)
+            }
           })
         })
         .catch((error) => console.log(error))
@@ -38,9 +56,9 @@ export function PersonForm({personId}: PersonFormProps) {
   }, [])
 
   const onSubmit = (data: any) => {
-    let route = personId ? `edit/${personId}` : "create"
-    axios
-      .post(`${BASE_URL}/person/${route}`, data, { headers: { 'Content-Type': 'application/json' }})
+    let client = clients.find((client) => client.clientId === data.clientId)
+    const axiosRouter = personId ? axios.put : axios.post
+    axiosRouter(`${BASE_URL}/person${personId ? "/" + personId : ""}`, {...data, client}, {headers: {"Content-Type": "application/json"}})
       .then((response) => {
         console.log(response)
       })
@@ -78,7 +96,8 @@ export function PersonForm({personId}: PersonFormProps) {
               <InputLabel id="client">Pick My Client</InputLabel>
               <Select
                 labelId="client"
-                id="clientId"
+                value={clientId}
+                id="client"
                 label="Client"
                 {...register("clientId")}
               >

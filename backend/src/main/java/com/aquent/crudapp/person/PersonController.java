@@ -3,32 +3,43 @@ package com.aquent.crudapp.person;
 import java.net.URI;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Controller for handling basic person management operations.
  */
-@CrossOrigin(origins = "http://localhost:3000", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE})
+@CrossOrigin(origins = "http://localhost:3000", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 @RestController
 @RequestMapping("person")
 public class PersonController {
 
-    private final PersonService personService;
+    private static final Logger logger = LoggerFactory.getLogger(PersonController.class);
 
-    public PersonController(PersonService personService) {
+    private final PersonService personService;
+    private final ObjectMapper mapper;
+
+    public PersonController(PersonService personService, ObjectMapper mapper) {
         this.personService = personService;
+        this.mapper = mapper;
     }
 
     /**
@@ -37,8 +48,8 @@ public class PersonController {
      * @return list view populated with the current list of people
      */
     @GetMapping(value = "list")
-    public ResponseEntity<List<Person>> findAll() {
-        List<Person> persons = personService.listPeople();
+    public ResponseEntity<List<PersonDTO>> findAll() {
+        List<PersonDTO> persons = personService.listPeople().stream().map(PersonDAO::toDTO).collect(Collectors.toList());
         return ResponseEntity.ok().body(persons);
     }
 
@@ -48,9 +59,9 @@ public class PersonController {
      * @param personId the ID of the person to show
      * @return show view populated from the person record
      */
-    @GetMapping(value = "read/{personId}")
-    public ResponseEntity<Person> read(@PathVariable UUID personId) {
-        Person person = personService.readPerson(personId);
+    @GetMapping(value = "{personId}")
+    public ResponseEntity<PersonDTO> read(@PathVariable("personId") UUID personId) {
+        PersonDTO person = personService.readPerson(personId).toDTO(true);
         return ResponseEntity.ok().body(person);
     }
 
@@ -63,10 +74,10 @@ public class PersonController {
      * @return redirect, or create view with errors
      */
     
-    @PostMapping(value = "create")
-    public ResponseEntity<Person> create(@Valid @RequestBody Person person) {
-        Person createdPerson = personService.createPerson(person);
-        return ResponseEntity.created(URI.create("person/" + createdPerson.getPersonId())).body(createdPerson);
+    @PostMapping
+    public ResponseEntity<PersonDTO> create(@Valid @RequestBody PersonDTO person) {
+        PersonDAO createdPerson = personService.createPerson(person.toDAO(true));
+        return ResponseEntity.created(URI.create("person/" + createdPerson.getPersonId())).body(createdPerson.toDTO(true));
     }
 
     /**
@@ -76,10 +87,12 @@ public class PersonController {
      *
      * @param person populated form bean for the person
      * @return redirect, or edit view with errors
+     * @throws JsonProcessingException 
      */
-    @PostMapping(value = "edit")
-    public ResponseEntity<Person> edit(Person person) {
-        return ResponseEntity.ok().body(personService.updatePerson(person));
+    @PutMapping(value = "{personId}")
+    public ResponseEntity<PersonDTO> edit(@Valid @RequestBody() PersonDTO person) throws JsonProcessingException {
+        logger.info("person: ", mapper.writeValueAsString(person));
+        return ResponseEntity.ok().body(personService.updatePerson(person.toDAO(true)).toDTO(true));
     }
 
     /**
@@ -88,8 +101,8 @@ public class PersonController {
      * @param personId the ID of the person to be deleted
      * @return redirect to the listing page
      */
-    @PostMapping(value = "delete")
-    public ResponseEntity<Void> delete(@RequestParam UUID personId) {
+    @DeleteMapping(value = "{personId}")
+    public ResponseEntity<Void> delete(@PathVariable("personId") UUID personId) {
         personService.deletePerson(personId);
         return ResponseEntity.noContent().build();
     }
