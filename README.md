@@ -1,3 +1,8 @@
+# Thank you for taking the time to review this!
+# Starting this Application
+
+To start this application properly, you will need to run `mvn package` in the backend directory, and then `npm i` in the frontend directory. Then, again in the backend directory, you will need to run `mvn spring-boot:run` to start the java backend. In the frontend directory, you can then run `npm start`, navigate to `localhost:3000` and you should be able to quickly navigate around my small application.
+
 # Aquent developer candidate project
 
 You can find the code to use as the basis for this project at https://github.com/aquent/crud-app. Please fork the repo on GitHub and submit a link to your fork.
