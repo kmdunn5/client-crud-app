@@ -14,13 +14,12 @@ export function ClientIndex() {
     axios
       .get(`${BASE_URL}/client/list`)
       .then((response) => {
-        console.log(response.data)
-        setClients(response.data);
+        setClients(response.data)
       })
       .finally(() => {
-        setIsLoading(false);
+        setIsLoading(false)
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.log(error))
   }, [])
 
   return (

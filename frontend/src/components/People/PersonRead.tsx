@@ -16,13 +16,12 @@ export function PersonRead() {
     axios
       .get(`${BASE_URL}/person/${id}`)
       .then((response) => {
-        console.log(response.data)
-        setPerson(response.data);
+        setPerson(response.data)
       })
       .finally(() => {
         setIsLoading(false);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.log(error))
   }, [id])
 
   const handleDelete = () => {

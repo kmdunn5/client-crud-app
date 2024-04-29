@@ -3,9 +3,6 @@ package com.aquent.crudapp.person;
 import java.io.Serializable;
 import java.util.UUID;
 
-// import javax.validation.constraints.NotNull;
-// import javax.validation.constraints.Size;
-
 import com.aquent.crudapp.client.ClientDTO;
 
 import jakarta.validation.constraints.NotNull;

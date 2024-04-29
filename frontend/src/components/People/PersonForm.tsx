@@ -65,7 +65,7 @@ export function PersonForm({personId}: PersonFormProps) {
       })
       .catch((error) => {
         if (error.code == 400) {
-          console.log("lkasjf")
+          console.log(error)
         } else {
           // kill app
         }
@@ -77,19 +77,68 @@ export function PersonForm({personId}: PersonFormProps) {
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl>
           {/* this would all be better as controllers */}
-          <TextField error={errors.firstName != undefined} sx={{marginBottom: "8px"}} id="firstName" label="First Name" variant="outlined" {...register( "firstName", { required: true } )}/>
+          <TextField
+            error={errors.firstName != undefined} 
+            sx={{marginBottom: "8px"}} 
+            id="firstName" 
+            label="First Name" 
+            variant="outlined" 
+            {...register( "firstName", { required: true } )}
+          />
           {errors.firstName && <span>This field is required</span>}
-          <TextField error={errors.lastName != undefined} sx={{marginBottom: "8px"}} id="lastName" label="Last Name" variant="outlined" {...register("lastName", { required: true })}/>
+          <TextField
+            error={errors.lastName != undefined} 
+            sx={{marginBottom: "8px"}} 
+            id="lastName" 
+            label="Last Name" 
+            variant="outlined" 
+            {...register("lastName", { required: true })}
+          />
           {errors.lastName && <span>This field is required</span>}
-          <TextField error={errors.emailAddress != undefined} sx={{marginBottom: "8px"}} id="emailAddress" label="Email Address" variant="outlined" {...register("emailAddress", { required: true })}/>
-          {errors.emailAddress && <span>This field is required</span>}
-          <TextField error={errors.streetAddress != undefined} sx={{marginBottom: "8px"}} id="streetAddress" label="Street Address" variant="outlined" {...register("streetAddress", { required: true })}/>
+          <TextField
+            error={errors.emailAddress != undefined} 
+            sx={{marginBottom: "8px"}} 
+            id="emailAddress" 
+            label="Email Address" 
+            variant="outlined" 
+            {...register("emailAddress", { required: true, pattern: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/ })}
+          />
+          {errors.emailAddress && <span>This field requires an email.</span>}
+          <TextField
+            error={errors.streetAddress != undefined} 
+            sx={{marginBottom: "8px"}} 
+            id="streetAddress" 
+            label="Street Address" 
+            variant="outlined" 
+            {...register("streetAddress", { required: true })}
+          />
           {errors.streetAddress && <span>This field is required</span>}
-          <TextField error={errors.city != undefined} sx={{marginBottom: "8px"}} id="city" label="City" variant="outlined" {...register("city", { required: true })}/>
+          <TextField
+            error={errors.city != undefined} 
+            sx={{marginBottom: "8px"}} 
+            id="city" 
+            label="City" 
+            variant="outlined" 
+            {...register("city", { required: true })}
+          />
           {errors.city && <span>This field is required</span>}
-          <TextField error={errors.state != undefined} sx={{marginBottom: "8px"}} id="state" label="State" variant="outlined" {...register("state", { required: true, minLength: 2, maxLength: 2 })}/>
+          <TextField
+            error={errors.state != undefined} 
+            sx={{marginBottom: "8px"}} 
+            id="state" 
+            label="State" 
+            variant="outlined"
+            {...register("state", { required: true, minLength: 2, maxLength: 2 })}
+          />
           {errors.state && <span>This field is required</span>}
-          <TextField error={errors.zipCode != undefined} sx={{marginBottom: "8px"}} id="zipCode" label="Zip Code" variant="outlined" {...register("zipCode", { required: true, minLength: 5, maxLength: 5})}/>
+          <TextField
+            error={errors.zipCode != undefined} 
+            sx={{marginBottom: "8px"}} 
+            id="zipCode" 
+            label="Zip Code" 
+            variant="outlined" 
+            {...register("zipCode", { required: true, minLength: 5, maxLength: 5})}
+          />
           {errors.zipCode && <span>This field is required</span>}
           {
             clients.length > 0 && 

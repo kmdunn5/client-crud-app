@@ -17,11 +17,10 @@ export function ClientRead() {
     axios
       .get(`${BASE_URL}/client/${id}`)
       .then((response) => {
-        console.log(response.data)
-        setClient(response.data);
+        setClient(response.data)
       })
       .finally(() => {
-        setIsLoading(false);
+        setIsLoading(false)
       })
       .catch((error) => console.log(error));
   }, [id])
@@ -59,13 +58,14 @@ export function ClientRead() {
         <>
           <Divider orientation="horizontal" flexItem sx={{marginBottom: "16px"}}/>
           <Grid container spacing={2} sx={{marginBottom: "16px"}}>
-            <Grid item xs={4}>
+            <Grid item xs={12}>
               <Typography>Contacts:</Typography>
             </Grid>
             { 
               client?.contacts.map((contact) => 
-                <Grid item xs={8}>
-                  <Typography component={Link} to={`/persons/${contact.personId}`}>{contact.firstName}</Typography>
+                <Grid component={Link} to={`/persons/${contact.personId}`} item xs={6}>
+                  <Typography>{contact.firstName}</Typography>
+                  <Typography>{contact.emailAddress}</Typography>
                 </Grid>
             
               )

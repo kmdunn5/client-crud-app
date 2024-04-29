@@ -30,13 +30,11 @@ export function ClientForm({clientId}: ClientFormProps) {
   let contacts = watch('contacts')
 
   useEffect(() => {
-    console.log(clientId)
     if (clientId) {
 
       axios
         .get(`${BASE_URL}/client/${clientId}`)
         .then((response) => {
-          console.log(response.data)
           // This is forcing this to work, I'm sure there's a better way.
           Object.entries<string | Person[]>(response.data).forEach(([k, v]) => {
             if (k === "contacts" && typeof v !== "string") {
@@ -54,7 +52,7 @@ export function ClientForm({clientId}: ClientFormProps) {
     axios
       .get(`${BASE_URL}/person/list`)
       .then((response) => {
-        console.log(response.data)
+        // I should filter out the people that have associated clients already
         setPeople(response.data)
       })
       .catch((error) => console.log(error))
@@ -81,19 +79,66 @@ export function ClientForm({clientId}: ClientFormProps) {
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl>
           {/* there's a better way to do this, I can iterate over each input field */}
-          <TextField error={errors.name != undefined} id="name" label="Client Name" variant="outlined" {...register( "name", { required: true } )}/>
+          <TextField 
+            error={errors.name != undefined} 
+            sx={{marginBottom: "8px"}} 
+            id="name"
+            label="Client Name" 
+            variant="outlined"
+            {...register( "name", { required: true } )}
+          />
           {errors.name && <span>This field is required</span>}
-          <TextField error={errors.websiteUri != undefined} id="websiteUri" label="Website" variant="outlined" {...register("websiteUri", { required: true })}/>
+          <TextField 
+            error={errors.websiteUri != undefined} 
+            sx={{marginBottom: "8px"}} 
+            id="websiteUri"
+            label="Website" 
+            variant="outlined" 
+            {...register("websiteUri", { required: true })}
+          />
           {errors.websiteUri && <span>This field is required</span>}
-          <TextField error={errors.phoneNumber != undefined} id="phoneNumber" label="Phone Number" variant="outlined" {...register("phoneNumber", { required: true })}/>
+          <TextField 
+            error={errors.phoneNumber != undefined} 
+            sx={{marginBottom: "8px"}} 
+            id="phoneNumber"
+            label="Phone Number" 
+            variant="outlined"
+            {...register("phoneNumber", { required: true })}
+          />
           {errors.phoneNumber && <span>This field is required</span>}
-          <TextField error={errors.streetAddress != undefined} sx={{marginBottom: "8px"}} id="streetAddress" label="Street Address" variant="outlined" {...register("streetAddress", { required: true })}/>
+          <TextField 
+            error={errors.streetAddress != undefined} 
+            sx={{marginBottom: "8px"}} 
+            id="streetAddress"
+            label="Street Address" 
+            variant="outlined"
+            {...register("streetAddress", { required: true })}
+            />
           {errors.streetAddress && <span>This field is required</span>}
-          <TextField error={errors.city != undefined} sx={{marginBottom: "8px"}} id="city" label="City" variant="outlined" {...register("city", { required: true })}/>
+          <TextField 
+            error={errors.city != undefined} 
+            sx={{marginBottom: "8px"}} 
+            id="city"
+            label="City" variant="outlined"
+            {...register("city", { required: true })}
+          />
           {errors.city && <span>This field is required</span>}
-          <TextField error={errors.state != undefined} sx={{marginBottom: "8px"}} id="state" label="State" variant="outlined" {...register("state", { required: true, minLength: 2, maxLength: 2 })}/>
+          <TextField 
+            error={errors.state != undefined} 
+            sx={{marginBottom: "8px"}} 
+            id="state"
+            label="State" variant="outlined" 
+            {...register("state", { required: true, minLength: 2, maxLength: 2 })}
+          />
           {errors.state && <span>This field is required</span>}
-          <TextField error={errors.zipCode != undefined} sx={{marginBottom: "8px"}} id="zipCode" label="Zip Code" variant="outlined" {...register("zipCode", { required: true, minLength: 5, maxLength: 5})}/>
+          <TextField 
+            error={errors.zipCode != undefined} 
+            sx={{marginBottom: "8px"}} 
+            id="zipCode"
+            label="Zip Code" 
+            variant="outlined"
+            {...register("zipCode", { required: true, minLength: 5, maxLength: 5})}
+          />
           {errors.zipCode && <span>This field is required </span>}
           {
             people.length > 0 && 

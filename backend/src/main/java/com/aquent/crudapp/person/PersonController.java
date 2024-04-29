@@ -43,9 +43,9 @@ public class PersonController {
     }
 
     /**
-     * Renders the listing page.
+     * Responds with the list of people.
      *
-     * @return list view populated with the current list of people
+     * @return the current list of people
      */
     @GetMapping(value = "list")
     public ResponseEntity<List<PersonDTO>> findAll() {
@@ -54,10 +54,10 @@ public class PersonController {
     }
 
     /**
-     * Renders the read page.
+     * Responds with the person entity.
      *
      * @param personId the ID of the person to show
-     * @return show view populated from the person record
+     * @return the person entity
      */
     @GetMapping(value = "{personId}")
     public ResponseEntity<PersonDTO> read(@PathVariable("personId") UUID personId) {
@@ -67,11 +67,11 @@ public class PersonController {
 
     /**
      * Validates and saves a new person.
-     * On success, the user is redirected to the listing page.
-     * On failure, the form is redisplayed with the validation errors.
+     * On success, the person is sent in the response.
+     * On failure, an error is sent to the requester.
      *
      * @param person populated form bean for the person
-     * @return redirect, or create view with errors
+     * @return response entity with a person record
      */
     
     @PostMapping
@@ -82,8 +82,8 @@ public class PersonController {
 
     /**
      * Validates and saves an edited person.
-     * On success, the user is redirected to the listing page.
-     * On failure, the form is redisplayed with the validation errors.
+     * On success, the person is sent in the response.
+     * On failure, an error is sent to the requester.
      *
      * @param person populated form bean for the person
      * @return redirect, or edit view with errors
@@ -96,10 +96,10 @@ public class PersonController {
     }
 
     /**
-     * Handles person deletion or cancellation, redirecting to the listing page in either case.
+    * Handles person deletion
      *
      * @param personId the ID of the person to be deleted
-     * @return redirect to the listing page
+     * @return return an empty successful response on delete
      */
     @DeleteMapping(value = "{personId}")
     public ResponseEntity<Void> delete(@PathVariable("personId") UUID personId) {

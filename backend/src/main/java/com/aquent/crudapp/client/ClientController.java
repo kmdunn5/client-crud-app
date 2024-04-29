@@ -34,7 +34,7 @@ public class ClientController {
     }
 
     /**
-     * Renders the listing page.
+     * Responds with the list of clients.
      *
      * @return the current list of clients
      */
@@ -45,10 +45,10 @@ public class ClientController {
     }
 
     /**
-     * Renders the read page.
+     * Responds with the client entity.
      *
      * @param clientId the ID of the client to show
-     * @return the client record
+     * @return the client entity
      */
     @GetMapping(value = "{clientId}")
     public ResponseEntity<ClientDTO> read(@PathVariable("clientId") UUID clientId) {
@@ -58,8 +58,8 @@ public class ClientController {
 
     /**
      * Validates and saves a new client.
-     * On success, the user is redirected to the listing page.
-     * On failure, the form is redisplayed with the validation errors.
+     * On success, the client is sent in the response.
+     * On failure, an error is sent to the requester.
      *
      * @param client populated form bean for the client
      * @return response entity with a client record
@@ -73,8 +73,8 @@ public class ClientController {
 
     /**
      * Validates and saves an edited client.
-     * On success, the user is redirected to the listing page.
-     * On failure, the form is redisplayed with the validation errors.
+     * On success, the client is sent in the response.
+     * On failure, an error is sent to the requester.
      *
      * @param client populated form bean for the client
      * @return redirect, or edit view with errors
@@ -85,10 +85,10 @@ public class ClientController {
     }
 
     /**
-     * Handles client deletion or cancellation, redirecting to the listing page in either case.
+     * Handles client deletion
      *
      * @param clientId the ID of the client to be deleted
-     * @return redirect to the listing page
+     * @return return an empty successful response on delete
      */
     @DeleteMapping(value = "{clientId}")
     public ResponseEntity<Void> delete(@PathVariable("clientId") UUID clientId) {
